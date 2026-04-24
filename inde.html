@@ -1,0 +1,1232 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wedding Invitation – Nafih & Nafiha</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Great+Vibes&family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --card-width: 430px;
+      --ink: #1a1a1a;
+      --soft-ink: #4a4a4a;
+      --line: #c0b8b0;
+      --bg: #f9f7f4;
+      --bg2: #f4f1ec;
+      --accent: #2c2c2c;
+      --gold: #b8956a;
+      --gold-light: #d4b896;
+      --cream: #faf8f5;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* Daniel Davis — place DanielDavis.otf or DanielDavis.ttf in /fonts/ (or Daniel Davis.* with space in name) */
+    @font-face {
+      font-family: 'Daniel Davis';
+      src:
+        url('fonts/DanielDavis.otf') format('opentype'),
+        url('fonts/DanielDavis.ttf') format('truetype'),
+        url('fonts/Daniel%20Davis.otf') format('opentype'),
+        url('fonts/Daniel%20Davis.ttf') format('truetype');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: 'Jost', sans-serif;
+      color: var(--ink);
+      background: #ddd9d2;
+      display: grid;
+      place-items: center;
+      padding: 20px 10px 40px;
+    }
+
+    /* ── Page background: canvas particles (particles.js–style, 3D depth, top → bottom) ── */
+    .bg-animation {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      z-index: -1;
+      pointer-events: none;
+      background: linear-gradient(
+        168deg,
+        #e3ded6 0%,
+        var(--bg2) 42%,
+        var(--bg) 100%
+      );
+    }
+
+    .bg-particles-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      opacity: 0.92;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .bg-particles-canvas { opacity: 0; visibility: hidden; }
+    }
+
+    /* ── INVITATION WRAPPER ── */
+    .invitation {
+      width: min(var(--card-width), 100%);
+      display: grid;
+      gap: 16px;
+    }
+
+    /* ── PANEL BASE ── */
+    .panel {
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ────────────────────────────────────────
+       PANEL 1 · COVER
+    ──────────────────────────────────────── */
+    .panel-cover {
+      min-height: 780px;
+      background-image: url("img/hero-section-bg-dark.jpeg");
+      background-size: cover;
+      background-position: center top;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .cover-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        180deg,
+        rgba(0,0,0,0.52) 0%,
+        rgba(0,0,0,0.38) 50%,
+        rgba(255,255,255,0.72) 100%
+      );
+    }
+
+    /* Arch frame */
+    .cover-arch {
+      position: absolute;
+      inset: 14px;
+      border: 1.5px solid rgba(255,255,255,0.60);
+      border-radius: 200px 200px 12px 12px;
+      animation: archPulse 4s ease-in-out infinite;
+    }
+
+    @keyframes archPulse {
+      0%,100% { opacity: 0.6; }
+      50%      { opacity: 1; }
+    }
+
+    /* Floral corners SVG overlay */
+    .floral-corners {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.18;
+    }
+
+    .cover-content {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      min-height: 780px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 70px 34px 60px;
+      color: #fff;
+      text-align: center;
+    }
+
+    /* Monogram */
+    .monogram {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(255,255,255,0.7);
+      display: grid;
+      place-items: center;
+      margin-bottom: 10px;
+      animation: fadeDown 1s ease both;
+      background: rgba(0,0,0,0.2);
+    }
+
+    .monogram-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      font-weight: 300;
+      letter-spacing: 4px;
+      color: #fff;
+      line-height: 1;
+    }
+
+    /* Small leaf ornament below monogram */
+    .mono-ornament {
+      font-size: 18px;
+      opacity: 0.75;
+      margin-bottom: 52px;
+      animation: fadeDown 1s 0.2s ease both;
+      color: #fff;
+      letter-spacing: 6px;
+    }
+
+    /* N & N logo above Bismillah */
+    .cover-nn-logo {
+      display: block;
+      width: 96px;
+      height: 96px;
+      object-fit: contain;
+      margin: 0 auto 18px;
+      filter: brightness(0) invert(1);
+      opacity: 0.95;
+      animation: fadeDown 1s 0.15s ease both;
+    }
+
+    .bismillah {
+      font-family: 'Jost', sans-serif;
+      margin-top: 0;
+      font-weight: 400;
+      font-size: 10.2px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      line-height: 1.7;
+      opacity: 0.92;
+      animation: fadeDown 1s 0.35s ease both;
+    }
+
+    /* Line + text + line: 5px gap between each line and the text */
+    .together-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      margin-top: 18px;
+      margin-bottom: 14px;
+    }
+
+    .together-line {
+      margin: 0;
+      font-size: 11px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      font-weight: 300;
+      opacity: 0.85;
+      animation: fadeDown 1s 0.5s ease both;
+    }
+
+    /* Small ✦ divider */
+    .star-divider {
+      font-size: 10px;
+      letter-spacing: 8px;
+      opacity: 0.55;
+      margin-bottom: 0px;
+      animation: fadeDown 1s 0.6s ease both;
+    }
+
+    .custom-divider-image {
+      margin: 0;
+      display: block;
+      width: 80px;
+      max-width: 100%;
+      height: auto;
+      flex-shrink: 0;
+    }
+
+    .couple-names {
+        margin-top: 45px;
+      animation: fadeUp 1.2s 0.7s ease both;
+      line-height: 1;
+    }
+
+    /* Small floral line under couple names (dark hero: lighten to white) */
+    .couple-names-divider {
+      display: block;
+      width: min(220px, 72%);
+      max-width: 100%;
+      height: auto;
+      margin: 14px auto 0;
+      opacity: 0.92;
+      filter: brightness(0) invert(1);
+      animation: fadeUp 1.2s 0.85s ease both;
+    }
+
+    .name-script {
+      display: block;
+      font-family: 'Daniel Davis', 'Great Vibes', cursive;
+      font-size: clamp(50px, 15vw, 60px);
+      line-height: 1.05;
+      color: #fff;
+      text-shadow: 0 2px 24px rgba(0,0,0,0.35);
+    }
+
+    .name-ampersand {
+      display: block;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 36px;
+      font-weight: 300;
+      letter-spacing: 8px;
+      margin: 4px 0 8px;
+      opacity: 0.9;
+    }
+
+    /* Bottom ornament row */
+    .cover-bottom-ornament {
+      position: absolute;
+      bottom: 110px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      color: #fff;
+      font-size: 13px;
+      letter-spacing: 10px;
+      opacity: 0.55;
+      white-space: nowrap;
+      animation: fadeUp 1s 1.2s ease both;
+    }
+
+    .cover-fade {
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      height: 180px;
+      background: linear-gradient(to top, rgba(244,241,236,1) 0%, rgba(244,241,236,0) 100%);
+      pointer-events: none;
+    }
+
+    /* ────────────────────────────────────────
+       PANEL 2 · DETAILS
+    ──────────────────────────────────────── */
+    .panel-details {
+      background: var(--bg);
+      padding: 44px 28px 40px;
+    }
+
+    /* Subtle floral BG */
+    .panel-details::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("img/flower icons.png");
+      background-repeat: no-repeat;
+      background-size: cover;
+      opacity: 0.12;
+      pointer-events: none;
+    }
+
+    /* ── TOP SECTION: ayah LEFT · photo RIGHT ── */
+    .details-top {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr 140px;
+      gap: 18px;
+      align-items: start;
+      margin-bottom: 36px;
+    }
+
+    .ayah-arabic {
+      font-family: 'Traditional Arabic', 'Scheherazade New', 'Arial Unicode MS', serif;
+      font-size: 14px;
+      line-height: 1.65;
+      direction: rtl;
+      text-align: right;
+      color: #222;
+      margin-bottom: 12px;
+    }
+
+    .ayah-translation {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 13px;
+      line-height: 1.7;
+      color: #555;
+    }
+
+    /* Photo with arch frame */
+    .top-photo-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .top-photo {
+      width: 140px;
+      border: 2px solid var(--ink);
+      padding: 5px;
+      border-radius: 80px 80px 8px 8px;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .top-photo img {
+      width: 100%;
+      height: 170px;
+      object-fit: cover;
+      object-position: center;
+      border-radius: 70px 70px 4px 4px;
+      display: block;
+    }
+
+    .top-photo-label {
+      position: absolute;
+      bottom: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255,255,255,0.82);
+      color: #1a1a1a;
+      font-family: 'Cormorant Garamond', serif;
+      padding: 2px 14px 2px 14px;
+      border-radius: 8px;
+      font-size: 18px;
+      letter-spacing: 3px;
+      font-weight: 500;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+      pointer-events: none;
+      user-select: none;
+      line-height: 1.2;
+      z-index: 2;
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      margin: 0 0 26px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--line);
+    }
+
+    .divider span {
+      font-size: 13px;
+      color: #888;
+      letter-spacing: 3px;
+    }
+
+    /* ── INVITE TITLE ── */
+    .invite-title {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      font-size: 11.5px;
+      letter-spacing: 3px;
+      font-weight: 500;
+      text-transform: uppercase;
+      margin-bottom: 26px;
+      color: #3a3a3a;
+    }
+
+    /* ── PHOTO STRIP ── */
+    .photo-strip {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 30px;
+    }
+
+    .photo-strip img {
+      width: 100%;
+      aspect-ratio: 3/4;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* ── DATE ROW ── */
+    .date-row {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: end;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .date-left {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      line-height: 1.3;
+      font-style: italic;
+      font-weight: 700;
+    }
+
+    .date-day {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 50px;
+      line-height: 0.82;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .date-time {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      line-height: 1.3;
+      text-align: right;
+      font-style: italic;
+      font-weight: 700;
+      padding-bottom: 10px;
+    }
+
+    /* ── HIJRI DATE ── */
+    .hijri-date {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      font-size: 15px;
+      letter-spacing: 1.5px;
+      color: #555;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .hijri-date::before,
+    .hijri-date::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #bbb;
+    }
+
+    /* ────────────────────────────────────────
+       PANEL 3 · EVENT / VENUE
+    ──────────────────────────────────────── */
+    .panel-event {
+      background: var(--bg2);
+      padding: 44px 26px 48px;
+      text-align: center;
+      display: grid;
+      gap: 20px;
+      align-content: start;
+    }
+
+    .event-label {
+      font-size: 11px;
+      letter-spacing: 3.5px;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 500;
+    }
+
+    .event-heading {
+      font-family: 'Great Vibes', cursive;
+      font-size: 44px;
+      color: var(--ink);
+      line-height: 1.1;
+    }
+
+    .venue-block {
+      border: 1px solid var(--line);
+      padding: 22px 20px;
+      background: #fff;
+      position: relative;
+    }
+
+    .venue-block::before {
+      content: '✦';
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--bg2);
+      padding: 0 10px;
+      font-size: 11px;
+      color: var(--gold);
+    }
+
+    .venue-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 500;
+      line-height: 1.45;
+      margin-bottom: 6px;
+    }
+
+    .venue-sub {
+      font-size: 12px;
+      letter-spacing: 1.5px;
+      color: #888;
+      text-transform: uppercase;
+    }
+
+    /* ── COUNTDOWN ── */
+    .countdown-label {
+      font-size: 10.5px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #999;
+      margin-bottom: -6px;
+    }
+
+    .countdown {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .count-box {
+      border: 1px solid var(--line);
+      padding: 18px 6px 14px;
+      background: #fff;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s;
+    }
+
+    .count-box::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--gold);
+      transform: scaleX(0);
+      transition: transform 0.3s;
+    }
+
+    .count-box:hover::after { transform: scaleX(1); }
+    .count-box:hover { border-color: var(--gold-light); }
+
+    .count-box span {
+      display: block;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 38px;
+      font-weight: 600;
+      line-height: 1;
+      color: var(--ink);
+    }
+
+    .count-box small {
+      display: block;
+      margin-top: 7px;
+      font-size: 9.5px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #888;
+    }
+
+    /* ── MAP BUTTON ── */
+    .map-btn-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .map-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: #fff;
+      background: var(--accent);
+      text-decoration: none;
+      padding: 14px 32px;
+      font-size: 11px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      font-weight: 500;
+      transition: background 0.3s, transform 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .map-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--gold);
+      transform: translateX(-100%);
+      transition: transform 0.35s ease;
+      z-index: 0;
+    }
+
+    .map-btn:hover::before { transform: translateX(0); }
+    .map-btn:hover { transform: translateY(-1px); }
+
+    .map-btn span { position: relative; z-index: 1; }
+
+    .map-btn-icon {
+      position: relative;
+      z-index: 1;
+      font-size: 15px;
+    }
+
+    /* Map preview frame */
+    .map-preview {
+      width: 100%;
+      height: 160px;
+      border: 1px solid var(--line);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .map-preview iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    /* ── FOOTER ── */
+    .panel-footer {
+      background: var(--ink);
+      color: #fff;
+      padding: 32px 26px;
+      text-align: center;
+      display: grid;
+      gap: 10px;
+    }
+
+    .footer-names {
+      font-family: 'Great Vibes', cursive;
+      font-size: 36px;
+      color: var(--gold-light);
+    }
+
+    .footer-date {
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      opacity: 0.6;
+    }
+
+    .footer-line {
+      width: 40px;
+      height: 1px;
+      background: var(--gold);
+      margin: 4px auto;
+    }
+
+    /* ────────────────────────────────────────
+       ANIMATIONS
+    ──────────────────────────────────────── */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    @keyframes slideLeft {
+      from { opacity: 0; transform: translateX(30px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes slideRight {
+      from { opacity: 0; transform: translateX(-30px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes scaleIn {
+      from { opacity: 0; transform: scale(0.92); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes countPop {
+      0%   { transform: scale(1); }
+      30%  { transform: scale(1.12); }
+      100% { transform: scale(1); }
+    }
+
+    /* Scroll-reveal classes */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.75s ease, transform 0.75s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-24px);
+      transition: opacity 0.75s ease, transform 0.75s ease;
+    }
+
+    .reveal-left.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .reveal-right {
+      opacity: 0;
+      transform: translateX(24px);
+      transition: opacity 0.75s ease, transform 0.75s ease;
+    }
+
+    .reveal-right.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .reveal-scale {
+      opacity: 0;
+      transform: scale(0.93);
+      transition: opacity 0.75s ease, transform 0.75s ease;
+    }
+
+    .reveal-scale.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    /* Delay helpers */
+    .d1 { transition-delay: 0.1s; }
+    .d2 { transition-delay: 0.2s; }
+    .d3 { transition-delay: 0.3s; }
+    .d4 { transition-delay: 0.4s; }
+    .d5 { transition-delay: 0.5s; }
+
+    /* count pop on change */
+    .pop { animation: countPop 0.35s ease; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 400px) {
+      .cover-nn-logo {
+        width: 82px;
+        height: 82px;
+        margin-bottom: 14px;
+      }
+      .details-top {
+        grid-template-columns: 1fr;
+      }
+      .top-photo-wrap {
+        order: -1;
+        align-self: center;
+      }
+      .top-photo {
+        width: 120px;
+        margin: 0 auto;
+      }
+      .ayah-arabic { font-size: 26px; }
+      .date-day { font-size: 76px; }
+      .date-left, .date-time { font-size: 18px; }
+      .couple-names .name-script { font-size: 58px; }
+      .countdown { grid-template-columns: repeat(2,1fr); }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-animation" aria-hidden="true">
+    <canvas class="bg-particles-canvas" id="bgParticlesCanvas"></canvas>
+  </div>
+  <main class="invitation">
+
+    <!-- ══════════════════════════════
+         PANEL 1 · COVER
+    ══════════════════════════════ -->
+    <section class="panel panel-cover">
+      <div class="cover-overlay"></div>
+      <div class="cover-arch"></div>
+
+      <!-- Decorative floral SVG corners -->
+      <svg class="floral-corners" viewBox="0 0 430 780" xmlns="http://www.w3.org/2000/svg">
+        <g fill="none" stroke="#fff" stroke-width="0.8">
+          <!-- top-left spray -->
+          <path d="M30,40 Q60,20 50,60" /><path d="M30,40 Q10,70 50,65" />
+          <circle cx="50" cy="60" r="3" fill="#fff"/>
+          <circle cx="50" cy="65" r="2" fill="#fff"/>
+          <path d="M30,40 Q55,10 70,30" /><circle cx="70" cy="30" r="2.5" fill="#fff"/>
+          <!-- top-right spray -->
+          <path d="M400,40 Q370,20 380,60" /><path d="M400,40 Q420,70 380,65" />
+          <circle cx="380" cy="60" r="3" fill="#fff"/>
+          <circle cx="380" cy="65" r="2" fill="#fff"/>
+          <path d="M400,40 Q375,10 360,30" /><circle cx="360" cy="30" r="2.5" fill="#fff"/>
+          <!-- bottom ornament strip -->
+          <path d="M155,720 Q215,705 275,720" stroke-width="0.7"/>
+          <circle cx="215" cy="708" r="3" fill="#fff"/>
+          <path d="M180,716 Q215,700 250,716" stroke-width="0.6"/>
+        </g>
+      </svg>
+
+      <div class="cover-content">
+        <img
+          src="img/n&n logo.png"
+          alt="N &amp; N"
+          class="cover-nn-logo"
+          width="96"
+          height="96"
+        />
+        <p class="bismillah">In the Name of Allah,<br>the Most Gracious, the Most Merciful</p>
+
+        <div class="together-block">
+          <img src="img/line png.png" alt="" class="custom-divider-image" aria-hidden="true" />
+          <p class="together-line">Together with our Families</p>
+          <img src="img/line png.png" alt="" class="custom-divider-image" aria-hidden="true" />
+        </div>
+
+        <div class="couple-names">
+          <span class="name-script">Nafih Wafy</span>
+          <span class="name-ampersand">&amp;</span>
+          <span class="name-script">Nafiha Wafiyya</span>
+        </div>
+        <img
+          src="img/flower-line-divider.png"
+          alt=""
+          class="couple-names-divider"
+          aria-hidden="true"
+        />
+      </div>
+
+      <div class="cover-bottom-ornament">✦&nbsp;&nbsp;&nbsp;✦&nbsp;&nbsp;&nbsp;✦</div>
+      <div class="cover-fade"></div>
+    </section>
+
+    <!-- ══════════════════════════════
+         PANEL 2 · DETAILS
+    ══════════════════════════════ -->
+    <section class="panel panel-details">
+
+      <!-- Ayah (LEFT) + Photo (RIGHT) -->
+      <div class="details-top">
+        <div class="ayah reveal-left">
+          <p class="ayah-arabic">وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُمْ مِنْ أَنْفُسِكُمْ أَزْوَاجًا<br>لِتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُمْ مَوَدَّةً وَرَحْمَةً<br>إِنَّ فِي ذَٰلِكَ لَآيَاتٍ لِقَوْمٍ يَتَفَكَّرُونَ</p>
+          <p class="ayah-translation">"And among His signs is that He created for you mates from among yourselves, that you may find tranquility in them; and He has placed between you affection and mercy. Indeed in that are signs for people who reflect."</p>
+        </div>
+        <div class="top-photo-wrap reveal-right d2">
+          <div class="top-photo">
+            <img src="img/96325001sec.jpeg" alt="N&N" />
+            <div class="top-photo-label">N&amp;N</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider reveal d1"><span>✦</span></div>
+      <p class="invite-title reveal d2">Request the Honor of Your Presence</p>
+
+      <!-- Photo strip -->
+      <div class="photo-strip">
+        <img src="img/9632501.jpeg" alt="Couple memory 1" class="strip-1 reveal-scale d1" />
+        <img src="img/9632502.jpeg" alt="Couple memory 2" class="strip-2 reveal-scale d2" />
+        <img src="img/9632503.jpeg" alt="Couple memory 3" class="strip-3 reveal-scale d3" />
+      </div>
+
+      <!-- Date row -->
+      <div class="date-row reveal d1">
+        <div class="date-left">May 2026,<br>Saturday</div>
+        <div class="date-day">16</div>
+        <div class="date-time">11:00 AM</div>
+      </div>
+
+      <p class="hijri-date reveal d2">29 Dhul-Qa'dah 1447 AH</p>
+    </section>
+
+    <!-- ══════════════════════════════
+         PANEL 3 · VENUE + COUNTDOWN + MAP
+    ══════════════════════════════ -->
+    <section class="panel panel-event">
+      <p class="event-label reveal">Reception to Follow</p>
+      <h2 class="event-heading reveal d1">The Celebration</h2>
+
+      <div class="venue-block reveal d2">
+        <p class="venue-name">PP Auditorium</p>
+        <p class="venue-sub">Thirunnavaya · Codacal · Kerala 676108</p>
+      </div>
+
+      <p class="countdown-label reveal d3">Counting Down To Forever</p>
+
+      <div class="countdown reveal d3" id="countdown">
+        <div class="count-box">
+          <span id="days">00</span>
+          <small>Days</small>
+        </div>
+        <div class="count-box">
+          <span id="hours">00</span>
+          <small>Hours</small>
+        </div>
+        <div class="count-box">
+          <span id="minutes">00</span>
+          <small>Minutes</small>
+        </div>
+        <div class="count-box">
+          <span id="seconds">00</span>
+          <small>Seconds</small>
+        </div>
+      </div>
+
+      <!-- Map embed preview -->
+      <div class="map-preview reveal d4">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3913.5!2d75.97!3d10.96!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTDCsDU3JzQyLjAiTiA3NcKwNTgnMTIuMCJF!5e0!3m2!1sen!2sin!4v1"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Venue map">
+        </iframe>
+      </div>
+
+      <div class="map-btn-wrap reveal d5">
+        <a class="map-btn" href="https://maps.app.goo.gl/28tgdTrqiuN8jgtY9?g_st=aw" target="_blank" rel="noopener noreferrer">
+          <span class="map-btn-icon">📍</span>
+          <span>Get Directions</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════
+         PANEL 4 · FOOTER
+    ══════════════════════════════ -->
+    <section class="panel panel-footer reveal">
+      <div class="footer-line"></div>
+      <p class="footer-names">Nafih &amp; Nafiha</p>
+      <p class="footer-date">16 · 05 · 2026</p>
+      <div class="footer-line"></div>
+    </section>
+
+  </main>
+
+  <script>
+    // ── Background: particles.js–style linked dots, pseudo-3D (z → scale/speed), fall top → bottom
+    (function () {
+      var canvas = document.getElementById("bgParticlesCanvas");
+      if (!canvas || !canvas.getContext) return;
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+      var ctx = canvas.getContext("2d", { alpha: true });
+      var W = 0;
+      var H = 0;
+      var dpr = 1;
+      var particles = [];
+      var focal = 520;
+      var linkDist = 118;
+      var linkDistSq = linkDist * linkDist;
+      var lastT = 0;
+      var rafId = 0;
+
+      function rand(a, b) {
+        return a + Math.random() * (b - a);
+      }
+
+      function focalScale(z) {
+        return focal / (focal - z);
+      }
+
+      function resetParticle(p, fromTop) {
+        p.x = rand(0, W);
+        p.y = fromTop ? rand(-H * 0.45, -8) : rand(-H * 0.2, H + 40);
+        p.z = rand(-320, 320);
+        p.vy = rand(0.35, 1.05);
+        p.vx = rand(-0.45, 0.45);
+        p.vz = rand(-0.12, 0.12);
+        p.rBase = rand(0.9, 2.4);
+        p.phase = rand(0, Math.PI * 2);
+      }
+
+      function resize() {
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        W = window.innerWidth;
+        H = window.innerHeight;
+        canvas.style.width = W + "px";
+        canvas.style.height = H + "px";
+        canvas.width = Math.floor(W * dpr);
+        canvas.height = Math.floor(H * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        linkDist = Math.min(132, Math.max(88, W * 0.13));
+        linkDistSq = linkDist * linkDist;
+
+        var area = W * H;
+        var target = Math.floor(area / 8500);
+        var count = Math.min(110, Math.max(42, target));
+
+        if (particles.length === 0) {
+          for (var i = 0; i < count; i++) {
+            var p = {};
+            resetParticle(p, false);
+            particles.push(p);
+          }
+        } else if (particles.length < count) {
+          while (particles.length < count) {
+            var q = {};
+            resetParticle(q, true);
+            particles.push(q);
+          }
+        } else if (particles.length > count) {
+          particles.length = count;
+        }
+      }
+
+      function step(dt) {
+        var t = performance.now() * 0.001;
+        for (var i = 0; i < particles.length; i++) {
+          var p = particles[i];
+          var sc = focalScale(p.z);
+          var sway = Math.sin(t * 0.55 + p.phase) * 0.22;
+          p.y += p.vy * dt * 0.55 * sc;
+          p.x += (p.vx + sway) * dt * 0.55 * sc;
+          p.z += p.vz * dt;
+          if (p.z > 300) p.vz = -Math.abs(p.vz);
+          if (p.z < -300) p.vz = Math.abs(p.vz);
+          if (p.y > H + 60) resetParticle(p, true);
+        }
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, W, H);
+        var i;
+        var j;
+        var a;
+        var b;
+        var dx;
+        var dy;
+        var d2;
+        var t;
+        var midZ;
+        var lineA;
+        var sc;
+        var cx;
+        var cy;
+        var pr;
+        var fillA;
+        var g;
+
+        for (i = 0; i < particles.length; i++) {
+          a = particles[i];
+          for (j = i + 1; j < particles.length; j++) {
+            b = particles[j];
+            dx = a.x - b.x;
+            dy = a.y - b.y;
+            d2 = dx * dx + dy * dy;
+            if (d2 > linkDistSq) continue;
+            if (Math.abs(a.z - b.z) > 220) continue;
+            midZ = (a.z + b.z) * 0.5;
+            t = 1 - d2 / linkDistSq;
+            lineA = t * t * (0.08 + focalScale(midZ) * 0.05);
+            if (lineA < 0.018) continue;
+            ctx.strokeStyle = "rgba(184, 149, 106, " + Math.min(lineA, 0.26) + ")";
+            ctx.lineWidth = 0.55;
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.stroke();
+          }
+        }
+
+        for (i = 0; i < particles.length; i++) {
+          a = particles[i];
+          sc = focalScale(a.z);
+          cx = a.x;
+          cy = a.y;
+          pr = a.rBase * sc * 0.52;
+          fillA = Math.min(0.5, 0.12 + sc * 0.1);
+          g = ctx.createRadialGradient(cx - pr * 0.35, cy - pr * 0.35, 0, cx, cy, pr * 2.4);
+          g.addColorStop(0, "rgba(255,255,255," + (fillA + 0.18) + ")");
+          g.addColorStop(0.45, "rgba(255,250,245," + (fillA * 0.75) + ")");
+          g.addColorStop(1, "rgba(255,255,255,0)");
+          ctx.fillStyle = g;
+          ctx.beginPath();
+          ctx.arc(cx, cy, pr * 2, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = "rgba(255,255,255," + (fillA + 0.06) + ")";
+          ctx.beginPath();
+          ctx.arc(cx, cy, pr, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      function frame(now) {
+        var dt = lastT ? Math.min((now - lastT) / 16.67, 3) : 1;
+        lastT = now;
+        step(dt);
+        draw();
+        rafId = requestAnimationFrame(frame);
+      }
+
+      resize();
+      window.addEventListener("resize", resize);
+      rafId = requestAnimationFrame(frame);
+    })();
+  </script>
+  <script>
+    // ── Countdown ──────────────────────────────────
+    (function () {
+      var wedding = new Date("2026-05-16T11:00:00+05:30").getTime();
+      var els = {
+        d: document.getElementById("days"),
+        h: document.getElementById("hours"),
+        m: document.getElementById("minutes"),
+        s: document.getElementById("seconds")
+      };
+      var prev = { d: -1, h: -1, m: -1, s: -1 };
+
+      function pad(n) { return String(n).padStart(2, "0"); }
+
+      function pop(el) {
+        el.classList.remove("pop");
+        void el.offsetWidth;
+        el.classList.add("pop");
+      }
+
+      function tick() {
+        var diff = wedding - Date.now();
+        if (diff <= 0) {
+          ["d","h","m","s"].forEach(k => els[k].textContent = "00");
+          return;
+        }
+        var d = Math.floor(diff / 864e5);
+        var h = Math.floor((diff % 864e5) / 36e5);
+        var mn = Math.floor((diff % 36e5) / 6e4);
+        var s = Math.floor((diff % 6e4) / 1e3);
+
+        if (d !== prev.d) { els.d.textContent = pad(d); pop(els.d); prev.d = d; }
+        if (h !== prev.h) { els.h.textContent = pad(h); pop(els.h); prev.h = h; }
+        if (mn !== prev.m) { els.m.textContent = pad(mn); pop(els.m); prev.m = mn; }
+        if (s !== prev.s) { els.s.textContent = pad(s); pop(els.s); prev.s = s; }
+      }
+
+      tick();
+      setInterval(tick, 1000);
+    })();
+
+    // ── Scroll Reveal ─────────────────────────────
+    (function () {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            io.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+
+      document
+        .querySelectorAll(".reveal, .reveal-left, .reveal-right, .reveal-scale")
+        .forEach(function (el) { io.observe(el); });
+    })();
+  </script>
+</body>
+</html>
