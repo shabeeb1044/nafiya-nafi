@@ -336,12 +336,15 @@
 
     .ayah-arabic {
       font-family: 'Traditional Arabic', 'Scheherazade New', 'Arial Unicode MS', serif;
-      font-size: 12px;
-      line-height: 1.65;
+      font-size: 14px;
+      font-size: 16px;          /* bigger = better readability */
+  line-height: 2.1;  
       direction: rtl;
       text-align: right;
       color: #222;
       margin-bottom: 12px;
+      unicode-bidi: isolate;
+      -webkit-font-smoothing: antialiased;
     }
 
     .ayah-translation {
