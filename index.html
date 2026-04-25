@@ -38,12 +38,14 @@
 
     body {
       min-height: 100vh;
-      font-family: 'Jost', sans-serif;
+      /* font-family: 'Jost', sans-serif; */
       color: var(--ink);
       background: #ddd9d2;
       display: grid;
       place-items: center;
-      padding: 20px 10px 40px;
+      /* padding: 20px 10px 40px; */
+      padding: 0;
+      margin: 0;
     }
 
     /* ── Page background: canvas particles (particles.js–style, 3D depth, top → bottom) ── */
@@ -68,6 +70,7 @@
       height: 100%;
       display: block;
       opacity: 0.92;
+      z-index: 999;
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -260,7 +263,7 @@
 
     .name-script {
       display: block;
-      font-family: 'Daniel Davis', 'Great Vibes', cursive;
+      font-family: 'Daniel Davis', 'Great Vibes', cursive !important;
       font-size: clamp(50px, 15vw, 60px);
       line-height: 1.05;
       color: #fff;
@@ -344,9 +347,10 @@
     .ayah-translation {
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
-      font-size: 13px;
+      font-size: 16px;
       line-height: 1.7;
-      color: #555;
+      color: #000000;
+      font-weight: 500;
     }
 
     /* Photo with arch frame */
@@ -702,7 +706,7 @@
     }
 
     .footer-names {
-      font-family: 'Great Vibes', cursive;
+      font-family: 'Daniel Davis', 'Great Vibes', cursive !important;
       font-size: 36px;
       color: var(--gold-light);
     }
@@ -833,7 +837,7 @@
         width: 120px;
         margin: 0 auto;
       }
-      .ayah-arabic { font-size: 26px; }
+      .ayah-arabic { font-size: 24px; }
       .date-day { font-size: 76px; }
       .date-left, .date-time { font-size: 18px; }
       .couple-names .name-script { font-size: 58px; }
@@ -992,7 +996,16 @@
 
       <div class="map-btn-wrap reveal d5">
         <a class="map-btn" href="https://maps.app.goo.gl/28tgdTrqiuN8jgtY9?g_st=aw" target="_blank" rel="noopener noreferrer">
-          <span class="map-btn-icon">📍</span>
+          <span class="map-btn-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" 
+                 xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 22s7-5.686 7-12A7 7 0 1 0 5 10c0 6.314 7 12 7 12Z" 
+                    stroke="currentColor" stroke-width="2" 
+                    stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="12" cy="10" r="3" 
+                      stroke="currentColor" stroke-width="2"/>
+            </svg>
+          </span>
           <span>Get Directions</span>
         </a>
       </div>
