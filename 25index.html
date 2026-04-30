@@ -1,0 +1,670 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wedding Invitation – Nafih & Nafiha</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Great+Vibes&family=Cinzel:wght@300;400;500&family=Dancing+Script:wght@400;500;600&family=Jost:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --card-width: 430px;
+            --ink: #1a1a1a;
+            --gold: #b8956a;
+            --gold-light: #d4b896;
+            --bg: #f9f7f4;
+            --bg2: #f4f1ec;
+            --line: #c0b8b0;
+            --wax-red: #9e2810;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: 'Jost', sans-serif;
+            color: var(--ink);
+            background: #1a1208;
+            overflow-x: hidden;
+        }
+
+        /* ====================== LOCAL FONTS ====================== */
+        @font-face {
+            font-family: 'Daniel Davis';
+            src: url('fonts/Daniel Davis.ttf') format('truetype'),
+                url('fonts/Daniel Davis.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        /* ====================== ENVELOPE SCREEN ====================== */
+        #envelope-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(ellipse at 40% 30%, #2d1f0a 0%, #1a1208 60%, #0d0905 100%);
+            overflow: hidden;
+        }
+
+        #env-particles {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+
+        .env-shimmer-top {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent 0%, var(--gold) 30%, #f0d080 50%, var(--gold) 70%, transparent 100%);
+            animation: shimmerSlide 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmerSlide {
+
+            0%,
+            100% {
+                opacity: 0.4;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        .env-pretext {
+            position: absolute;
+            top: 48px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Cinzel', serif;
+            font-size: 9px;
+            letter-spacing: 0.4em;
+            color: rgba(184, 149, 106, 0.6);
+            text-transform: uppercase;
+            opacity: 0;
+            animation: envFadeIn 1s ease 0.5s forwards;
+        }
+
+        @keyframes envFadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .envelope-stage {
+            position: relative;
+            width: min(420px, 90vw);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .env-title-above {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(13px, 3.5vw, 16px);
+            font-style: italic;
+            font-weight: 300;
+            color: rgba(245, 234, 216, 0.7);
+            letter-spacing: 0.15em;
+            margin-bottom: 32px;
+            text-align: center;
+        }
+
+        .env-wrap {
+            position: relative;
+            width: 100%;
+            height: clamp(220px, 50vw, 280px);
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        /* Envelope Base */
+        .env-base {
+            position: absolute;
+            inset: 0;
+            filter: drop-shadow(0 40px 80px rgba(0, 0, 0, 0.85)) drop-shadow(0 15px 40px rgba(0, 0, 0, 0.6));
+        }
+
+        /* Flap */
+        .env-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 55%;
+            transform-origin: top center;
+            transform-style: preserve-3d;
+            transition: transform 1.6s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 10;
+        }
+
+        .env-flap.open {
+            transform: rotateX(185deg);
+        }
+
+        /* Wax Seal */
+        .env-seal {
+            position: absolute;
+            left: 50%;
+            top: 46%;
+            transform: translate(-50%, -50%);
+            width: clamp(72px, 17vw, 92px);
+            height: clamp(72px, 17vw, 92px);
+            z-index: 20;
+            transition: all 0.6s ease;
+            cursor: pointer;
+        }
+
+        .env-seal.dissolving {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.45) rotate(20deg);
+        }
+
+        /* Mini Card Peek - Using Real Image */
+        .env-card-peek {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            width: 68%;
+            z-index: 5;
+            opacity: 0;
+            transition: transform 1.3s cubic-bezier(0.22, 1, 0.36, 1) 0.6s,
+                opacity 0.6s ease 0.6s;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+        }
+
+        .env-card-peek.rising {
+            transform: translateX(-50%) translateY(-105%);
+            opacity: 1;
+        }
+
+        .env-card-peek img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .env-cta {
+            margin-top: 44px;
+            opacity: 0;
+            animation: envFadeIn 1s ease 1.6s forwards;
+            text-align: center;
+        }
+
+        .env-hint {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 12.5px;
+            color: rgba(245, 234, 216, 0.4);
+            letter-spacing: 0.1em;
+            font-style: italic;
+        }
+
+        /* ====================== MAIN INVITATION ====================== */
+        #transition-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            background: #1a1208;
+            opacity: 0;
+            transition: opacity 0.7s ease;
+            pointer-events: none;
+        }
+
+        #transition-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        #main-invitation {
+            display: none;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        #main-invitation.visible {
+            display: block;
+            opacity: 1;
+        }
+
+        .bg-animation {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background: linear-gradient(168deg, #e3ded6 0%, var(--bg2) 42%, var(--bg) 100%);
+            pointer-events: none;
+        }
+
+        .bg-particles-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.92;
+        }
+
+        /* Name Font - Only Daniel Davis + Great Vibes */
+        .name-script {
+            font-family: 'Daniel Davis', 'Great Vibes', cursive !important;
+            font-size: clamp(48px, 14vw, 64px);
+            line-height: 1.02;
+            color: #fff;
+            text-shadow: 0 3px 25px rgba(0, 0, 0, 0.45);
+        }
+
+        .name-ampersand {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 38px;
+            font-weight: 300;
+            letter-spacing: 8px;
+            color: #fff;
+            opacity: 0.9;
+        }
+
+        /* Keep your original panel styles */
+        .invitation {
+            position: relative;
+            z-index: 1;
+            width: min(var(--card-width), 100%);
+            margin: 0 auto;
+            padding: 0 0 40px;
+        }
+
+        .panel-cover {
+            min-height: 780px;
+            background: linear-gradient(180deg, #1a1208 0%, #2d1f0a 30%, #f4f1ec 100%);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .cover-content {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            padding: 70px 34px 60px;
+            text-align: center;
+            color: #fff;
+        }
+
+        .couple-names {
+            margin-top: 45px;
+            animation: fadeUp 1.2s 0.7s ease both;
+        }
+
+        .cover-bottom-ornament {
+            position: absolute;
+            bottom: 110px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 13px;
+            letter-spacing: 10px;
+            color: #fff;
+            opacity: 0.5;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(25px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes countPop {
+            0% {
+                transform: scale(1);
+            }
+
+            30% {
+                transform: scale(1.12);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.75s ease, transform 0.75s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-24px);
+            transition: opacity 0.75s ease, transform 0.75s ease;
+        }
+
+        .reveal-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(24px);
+            transition: opacity 0.75s ease, transform 0.75s ease;
+        }
+
+        .reveal-right.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .reveal-scale {
+            opacity: 0;
+            transform: scale(0.93);
+            transition: opacity 0.75s ease, transform 0.75s ease;
+        }
+
+        .reveal-scale.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .d1 {
+            transition-delay: 0.1s;
+        }
+
+        .d2 {
+            transition-delay: 0.2s;
+        }
+
+        .d3 {
+            transition-delay: 0.3s;
+        }
+
+        .d4 {
+            transition-delay: 0.4s;
+        }
+
+        .d5 {
+            transition-delay: 0.5s;
+        }
+
+        .pop {
+            animation: countPop 0.35s ease;
+        }
+
+        @media (max-width: 400px) {
+            .details-top {
+                grid-template-columns: 1fr;
+            }
+
+            .top-photo-wrap {
+                order: -1;
+                align-self: center;
+            }
+
+            .top-photo {
+                width: 120px;
+                margin: 0 auto;
+            }
+
+            .date-day {
+                font-size: 56px;
+            }
+
+            .date-left,
+            .date-time {
+                font-size: 18px;
+            }
+
+            .countdown {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Add your remaining styles (details panel, venue, countdown, etc.) here if needed */
+        /* For now, keeping it minimal and clean. You can paste your full panel styles below if you want. */
+    </style>
+</head>
+
+<body>
+
+    <!-- Transition Overlay -->
+    <div id="transition-overlay"></div>
+
+    <!-- ENVELOPE SCREEN -->
+    <div id="envelope-screen">
+        <canvas id="env-particles"></canvas>
+        <div class="env-shimmer-top"></div>
+        <p class="env-pretext">You have received a wedding invitation</p>
+
+        <div class="envelope-stage">
+            <p class="env-title-above">A letter sealed with love, awaiting you…</p>
+
+            <div class="env-wrap" id="envWrap">
+
+                <!-- Mini Card Peek - Real Image -->
+                <div class="env-card-peek" id="envCard">
+                    <img src="img/invitation-preview.jpg" alt="Nafih & Nafiha Wedding Invitation"
+                        onerror="this.src='https://via.placeholder.com/280x360/e8d5b5/3d2810?text=Nafih+%26+Nafiha'">
+                </div>
+
+                <!-- Envelope Base -->
+                <div class="env-base">
+                    <svg viewBox="0 0 420 270" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="eb" x1="0" y1="0" x2="0.3" y2="1">
+                                <stop offset="0%" stop-color="#f5ead8" />
+                                <stop offset="100%" stop-color="#e8d5b5" />
+                            </linearGradient>
+                        </defs>
+                        <rect width="420" height="270" fill="url(#eb)" rx="4" />
+                        <path d="M0 270 L210 155 L420 270Z" fill="#d8c5a0" opacity="0.45" />
+                    </svg>
+                </div>
+
+                <!-- Envelope Flap -->
+                <div class="env-flap" id="envFlap">
+                    <svg viewBox="0 0 420 180" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M0 0 L420 0 L210 168 Z" fill="#f8f0e0" />
+                    </svg>
+                </div>
+
+                <!-- Wax Seal -->
+                <div class="env-seal" id="envSeal">
+                    <svg viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="45" cy="45" r="38" fill="#9e2810" />
+                        <text x="45" y="52" text-anchor="middle" font-family="Cinzel" font-size="11" fill="#f8e8d8"
+                            font-weight="600">N&amp;N</text>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="env-cta">
+                <p class="env-hint">Tap the envelope to open invitation</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN INVITATION -->
+    <div id="main-invitation">
+        <div class="bg-animation">
+            <canvas class="bg-particles-canvas" id="bgParticlesCanvas"></canvas>
+        </div>
+
+        <main class="invitation">
+            <!-- PANEL 1: COVER -->
+            <section class="panel panel-cover">
+                <div class="cover-content">
+                    <p class="bismillah" style="font-size:10.5px; letter-spacing:2px; margin-bottom:20px; opacity:0.9;">
+                        In the Name of Allah, the Most Gracious, the Most Merciful
+                    </p>
+
+                    <div class="couple-names">
+                        <span class="name-script">Nafih Wafy</span>
+                        <span class="name-ampersand">&amp;</span>
+                        <span class="name-script">Nafiha Wafiyya</span>
+                    </div>
+
+                    <div class="cover-bottom-ornament">✦&nbsp;&nbsp;✦&nbsp;&nbsp;✦</div>
+                </div>
+            </section>
+
+            <!-- You can add more panels (details, venue, etc.) here as needed -->
+        </main>
+    </div>
+
+    <script>
+        // Envelope Particles (unchanged)
+        (function () {
+            const c = document.getElementById('env-particles');
+            if (!c) return;
+            const ctx = c.getContext('2d');
+            let W, H, pts = [], raf;
+
+            function resize() {
+                W = c.width = window.innerWidth;
+                H = c.height = window.innerHeight;
+            }
+
+            function rand(a, b) { return a + Math.random() * (b - a); }
+
+            for (let i = 0; i < 55; i++) {
+                pts.push({
+                    x: rand(0, window.innerWidth),
+                    y: rand(0, window.innerHeight),
+                    vx: rand(-0.3, 0.3),
+                    vy: rand(-0.2, 0.15),
+                    r: rand(0.6, 1.8),
+                    a: rand(0.1, 0.5),
+                    phase: rand(0, Math.PI * 2)
+                });
+            }
+
+            function draw(t) {
+                t = t * 0.001;
+                ctx.clearRect(0, 0, W, H);
+                for (let i = 0; i < pts.length; i++) {
+                    for (let j = i + 1; j < pts.length; j++) {
+                        const dx = pts[i].x - pts[j].x;
+                        const dy = pts[i].y - pts[j].y;
+                        const d2 = dx * dx + dy * dy;
+                        if (d2 > 14000) continue;
+                        const alpha = (1 - d2 / 14000) * 0.12;
+                        ctx.strokeStyle = `rgba(184,149,106,${alpha})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.beginPath();
+                        ctx.moveTo(pts[i].x, pts[i].y);
+                        ctx.lineTo(pts[j].x, pts[j].y);
+                        ctx.stroke();
+                    }
+                }
+                for (let p of pts) {
+                    const a = p.a * (0.6 + 0.4 * Math.sin(t * 0.8 + p.phase));
+                    ctx.fillStyle = `rgba(245,234,216,${a})`;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    ctx.fill();
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+                    if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+                }
+                raf = requestAnimationFrame(draw);
+            }
+
+            resize();
+            window.addEventListener('resize', resize);
+            raf = requestAnimationFrame(draw);
+
+            window.stopEnvParticles = () => cancelAnimationFrame(raf);
+        })();
+
+        // Envelope Open Animation
+        let envelopeOpened = false;
+
+        function triggerEnvelopeOpen() {
+            if (envelopeOpened) return;
+            envelopeOpened = true;
+
+            const flap = document.getElementById('envFlap');
+            const seal = document.getElementById('envSeal');
+            const card = document.getElementById('envCard');
+            const overlay = document.getElementById('transition-overlay');
+
+            seal.classList.add('dissolving');
+            setTimeout(() => flap.classList.add('open'), 450);
+            setTimeout(() => card.classList.add('rising'), 1100);
+            setTimeout(() => overlay.classList.add('active'), 2700);
+
+            setTimeout(() => {
+                const mainInv = document.getElementById('main-invitation');
+                const envScreen = document.getElementById('envelope-screen');
+
+                if (window.stopEnvParticles) window.stopEnvParticles();
+
+                mainInv.style.display = 'block';
+                envScreen.style.transition = 'opacity 0.8s';
+                envScreen.style.opacity = '0';
+
+                setTimeout(() => {
+                    overlay.classList.remove('active');
+                    mainInv.style.opacity = '1';
+                    // You can call startBgParticles(), startCountdown(), etc. here if added
+                }, 600);
+            }, 3600);
+        }
+
+        // Click handlers
+        document.getElementById('envWrap').addEventListener('click', triggerEnvelopeOpen);
+
+        // Optional: Add more functionality like countdown if needed
+    </script>
+</body>
+
+</html>
