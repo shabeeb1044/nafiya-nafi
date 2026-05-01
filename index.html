@@ -5,6 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Wedding Invitation – Nafih & Nafiha</title>
+  <link rel="preload" href="./852.mp4" as="video" type="video/mp4">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -101,30 +102,6 @@
       cursor: pointer;
     }
 
-    #intro-skip-btn {
-      position: absolute;
-      top: 16px;
-      right: 16px;
-      z-index: 3;
-      border: 1px solid rgba(255, 255, 255, 0.28);
-      background: rgba(10, 10, 10, 0.35);
-      color: #fff;
-      border-radius: 999px;
-      padding: 9px 14px;
-      font-size: 12px;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      cursor: pointer;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.25s ease;
-    }
-
-    #intro-screen.playing #intro-skip-btn {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
     #transition-overlay {
       position: fixed;
       inset: 0;
@@ -132,7 +109,7 @@
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
-      transition: opacity 0.55s ease;
+      transition: opacity 0.22s ease;
       background: radial-gradient(circle, rgba(255, 245, 232, 0.08), rgba(255, 245, 232, 0.88));
     }
 
@@ -1070,10 +1047,9 @@
 
 <body class="preloader-active">
   <div id="intro-screen" aria-live="polite">
-    <video id="intro-video" playsinline preload="auto">
+    <video id="intro-video" playsinline preload="auto" muted>
       <source src="./852.mp4" type="video/mp4" />
     </video>
-    <button id="intro-skip-btn" type="button">Skip Intro</button>
     <div id="intro-progress">
       <div id="intro-progress-bar"></div>
     </div>
@@ -1251,34 +1227,29 @@
 
   <script>
     (function () {
-      var INTRO_KEY = "wedding_intro_seen_v1";
       var introScreen = document.getElementById("intro-screen");
       var introVideo = document.getElementById("intro-video");
-      var skipBtn = document.getElementById("intro-skip-btn");
       var progressBar = document.getElementById("intro-progress-bar");
       var transitionOverlay = document.getElementById("transition-overlay");
       var introDone = false;
       var introStarted = false;
 
-      if (!introScreen || !introVideo || !skipBtn || !progressBar || !transitionOverlay) {
+      if (!introScreen || !introVideo || !progressBar || !transitionOverlay) {
         document.body.classList.remove("preloader-active");
         return;
       }
 
       function revealMain() {
-        transitionOverlay.classList.add("active");
         introScreen.classList.add("hidden");
         document.body.classList.remove("preloader-active");
         window.scrollTo(0, 0);
-        setTimeout(function () {
-          transitionOverlay.classList.remove("active");
-        }, 600);
+        transitionOverlay.classList.remove("active");
       }
 
       function finishIntro() {
         if (introDone) return;
         introDone = true;
-        localStorage.setItem(INTRO_KEY, "1");
+        introVideo.pause();
         revealMain();
       }
 
@@ -1288,20 +1259,16 @@
         progressBar.style.transform = "scaleX(" + ratio + ")";
       }
 
-      if (localStorage.getItem(INTRO_KEY) === "1") {
-        introScreen.classList.add("hidden");
-        document.body.classList.remove("preloader-active");
-        return;
-      }
-
       function startIntroPlayback() {
         if (introStarted) return;
         introStarted = true;
         introScreen.classList.add("playing");
+        transitionOverlay.classList.remove("active");
+        introVideo.muted = true;
+        introVideo.currentTime = 0;
         var p = introVideo.play();
         if (p && typeof p.catch === "function") {
           p.catch(function () {
-            introVideo.muted = true;
             introVideo.play().catch(function () {
               finishIntro();
             });
@@ -1310,13 +1277,10 @@
       }
 
       introScreen.addEventListener("click", function (event) {
-        if (event.target === skipBtn) return;
         startIntroPlayback();
       });
 
       introVideo.addEventListener("click", startIntroPlayback);
-
-      skipBtn.addEventListener("click", finishIntro);
       introVideo.addEventListener("ended", finishIntro);
       introVideo.addEventListener("timeupdate", updateProgress);
       introVideo.addEventListener("loadedmetadata", updateProgress);
