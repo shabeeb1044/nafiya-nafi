@@ -1,12 +1,16 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Wedding Invitation – Nafih & Nafiha</title>
+  <link rel="preload" href="./852.mp4" as="video" type="video/mp4">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Great+Vibes&family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Great+Vibes&family=Jost:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
   <style>
     :root {
       --card-width: 430px;
@@ -21,7 +25,13 @@
       --cream: #faf8f5;
     }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     /* Daniel Davis — place DanielDavis.otf or DanielDavis.ttf in /fonts/ (or Daniel Davis.* with space in name) */
     @font-face {
@@ -31,9 +41,10 @@
         url('fonts/DanielDavis.ttf') format('truetype'),
         url('fonts/Daniel%20Davis.otf') format('opentype'),
         url('fonts/Daniel%20Davis.ttf') format('truetype');
+
       font-weight: 400;
       font-style: normal;
-      font-display: swap;
+      font-display: block;
     }
 
     body {
@@ -48,6 +59,84 @@
       margin: 0;
     }
 
+    body.preloader-active {
+      overflow: hidden;
+    }
+
+    #main-invitation {
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    body.preloader-active #main-invitation {
+      opacity: 0;
+      transform: translateY(12px) scale(0.99);
+      pointer-events: none;
+    }
+
+    #intro-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: #080808;
+      overflow: hidden;
+      transition: opacity 0.7s ease, visibility 0.7s ease;
+    }
+
+    #intro-screen.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    #intro-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 1;
+      transition: opacity 0.45s ease;
+    }
+
+    #intro-screen:not(.playing) {
+      cursor: pointer;
+    }
+
+    #transition-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9998;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.22s ease;
+      background: radial-gradient(circle, rgba(255, 245, 232, 0.08), rgba(255, 245, 232, 0.88));
+    }
+
+    #transition-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    #intro-progress {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 3;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    #intro-progress-bar {
+      width: 100%;
+      height: 100%;
+      transform-origin: left center;
+      transform: scaleX(0);
+      transition: transform 0.1s linear;
+      background: linear-gradient(90deg, #f2d3ae 0%, #c28e5b 100%);
+    }
+
     /* ── Page background: canvas particles (particles.js–style, 3D depth, top → bottom) ── */
     .bg-animation {
       position: fixed;
@@ -55,12 +144,10 @@
       overflow: hidden;
       z-index: 0;
       pointer-events: none;
-      background: linear-gradient(
-        168deg,
-        #e3ded6 0%,
-        var(--bg2) 42%,
-        var(--bg) 100%
-      );
+      background: linear-gradient(168deg,
+          #e3ded6 0%,
+          var(--bg2) 42%,
+          var(--bg) 100%);
     }
 
     .bg-particles-canvas {
@@ -74,7 +161,10 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .bg-particles-canvas { opacity: 0; visibility: hidden; }
+      .bg-particles-canvas {
+        opacity: 0;
+        visibility: hidden;
+      }
     }
 
     /* ── INVITATION WRAPPER ── */
@@ -106,26 +196,31 @@
     .cover-overlay {
       position: absolute;
       inset: 0;
-      background: linear-gradient(
-        180deg,
-        rgba(0,0,0,0.52) 0%,
-        rgba(0,0,0,0.38) 50%,
-        rgba(255,255,255,0.72) 100%
-      );
+      background: linear-gradient(180deg,
+          rgba(0, 0, 0, 0.52) 0%,
+          rgba(0, 0, 0, 0.38) 50%,
+          rgba(255, 255, 255, 0.72) 100%);
     }
 
     /* Arch frame */
     .cover-arch {
       position: absolute;
       inset: 14px;
-      border: 1.5px solid rgba(255,255,255,0.60);
+      border: 1.5px solid rgba(255, 255, 255, 0.60);
       border-radius: 200px 200px 12px 12px;
       animation: archPulse 4s ease-in-out infinite;
     }
 
     @keyframes archPulse {
-      0%,100% { opacity: 0.6; }
-      50%      { opacity: 1; }
+
+      0%,
+      100% {
+        opacity: 0.6;
+      }
+
+      50% {
+        opacity: 1;
+      }
     }
 
     /* Floral corners SVG overlay */
@@ -154,12 +249,12 @@
       width: 96px;
       height: 96px;
       border-radius: 50%;
-      border: 1.5px solid rgba(255,255,255,0.7);
+      border: 1.5px solid rgba(255, 255, 255, 0.7);
       display: grid;
       place-items: center;
       margin-bottom: 10px;
       animation: fadeDown 1s ease both;
-      background: rgba(0,0,0,0.2);
+      background: rgba(0, 0, 0, 0.2);
     }
 
     .monogram-text {
@@ -244,7 +339,7 @@
     }
 
     .couple-names {
-        margin-top: 45px;
+      margin-top: 45px;
       animation: fadeUp 1.2s 0.7s ease both;
       line-height: 1;
     }
@@ -263,11 +358,11 @@
 
     .name-script {
       display: block;
-      font-family: 'Daniel Davis', 'Great Vibes', cursive !important;
+      font-family: 'Daniel Davis' !important;
       font-size: clamp(50px, 15vw, 60px);
       line-height: 1.05;
       color: #fff;
-      text-shadow: 0 2px 24px rgba(0,0,0,0.35);
+      text-shadow: 0 2px 24px rgba(0, 0, 0, 0.35);
     }
 
     .name-ampersand {
@@ -297,9 +392,11 @@
 
     .cover-fade {
       position: absolute;
-      left: 0; right: 0; bottom: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
       height: 180px;
-      background: linear-gradient(to top, rgba(244,241,236,1) 0%, rgba(244,241,236,0) 100%);
+      background: linear-gradient(to top, rgba(244, 241, 236, 1) 0%, rgba(244, 241, 236, 0) 100%);
       pointer-events: none;
     }
 
@@ -337,8 +434,9 @@
     .ayah-arabic {
       font-family: 'Traditional Arabic', 'Scheherazade New', 'Arial Unicode MS', serif;
       font-size: 14px;
-      font-size: 16px;          /* bigger = better readability */
-  line-height: 2.1;  
+      font-size: 16px;
+      /* bigger = better readability */
+      line-height: 2.1;
       direction: rtl;
       text-align: right;
       color: #222;
@@ -390,7 +488,7 @@
       bottom: 8px;
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(255,255,255,0.82);
+      background: rgba(255, 255, 255, 0.82);
       color: #1a1a1a;
       font-family: 'Cormorant Garamond', serif;
       padding: 2px 14px 2px 14px;
@@ -398,7 +496,7 @@
       font-size: 18px;
       letter-spacing: 3px;
       font-weight: 500;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
       pointer-events: none;
       user-select: none;
       line-height: 1.2;
@@ -609,15 +707,22 @@
     .count-box::after {
       content: '';
       position: absolute;
-      bottom: 0; left: 0; right: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
       height: 2px;
       background: var(--gold);
       transform: scaleX(0);
       transition: transform 0.3s;
     }
 
-    .count-box:hover::after { transform: scaleX(1); }
-    .count-box:hover { border-color: var(--gold-light); }
+    .count-box:hover::after {
+      transform: scaleX(1);
+    }
+
+    .count-box:hover {
+      border-color: var(--gold-light);
+    }
 
     .count-box span {
       display: block;
@@ -672,10 +777,18 @@
       z-index: 0;
     }
 
-    .map-btn:hover::before { transform: translateX(0); }
-    .map-btn:hover { transform: translateY(-1px); }
+    .map-btn:hover::before {
+      transform: translateX(0);
+    }
 
-    .map-btn span { position: relative; z-index: 1; }
+    .map-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .map-btn span {
+      position: relative;
+      z-index: 1;
+    }
 
     .map-btn-icon {
       position: relative;
@@ -732,39 +845,87 @@
        ANIMATIONS
     ──────────────────────────────────────── */
     @keyframes fadeDown {
-      from { opacity: 0; transform: translateY(-18px); }
-      to   { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(-18px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; }
-      to   { opacity: 1; }
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
     }
 
     @keyframes slideLeft {
-      from { opacity: 0; transform: translateX(30px); }
-      to   { opacity: 1; transform: translateX(0); }
+      from {
+        opacity: 0;
+        transform: translateX(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
     }
 
     @keyframes slideRight {
-      from { opacity: 0; transform: translateX(-30px); }
-      to   { opacity: 1; transform: translateX(0); }
+      from {
+        opacity: 0;
+        transform: translateX(-30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
     }
 
     @keyframes scaleIn {
-      from { opacity: 0; transform: scale(0.92); }
-      to   { opacity: 1; transform: scale(1); }
+      from {
+        opacity: 0;
+        transform: scale(0.92);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
     }
 
     @keyframes countPop {
-      0%   { transform: scale(1); }
-      30%  { transform: scale(1.12); }
-      100% { transform: scale(1); }
+      0% {
+        transform: scale(1);
+      }
+
+      30% {
+        transform: scale(1.12);
+      }
+
+      100% {
+        transform: scale(1);
+      }
     }
 
     /* Scroll-reveal classes */
@@ -813,14 +974,30 @@
     }
 
     /* Delay helpers */
-    .d1 { transition-delay: 0.1s; }
-    .d2 { transition-delay: 0.2s; }
-    .d3 { transition-delay: 0.3s; }
-    .d4 { transition-delay: 0.4s; }
-    .d5 { transition-delay: 0.5s; }
+    .d1 {
+      transition-delay: 0.1s;
+    }
+
+    .d2 {
+      transition-delay: 0.2s;
+    }
+
+    .d3 {
+      transition-delay: 0.3s;
+    }
+
+    .d4 {
+      transition-delay: 0.4s;
+    }
+
+    .d5 {
+      transition-delay: 0.5s;
+    }
 
     /* count pop on change */
-    .pop { animation: countPop 0.35s ease; }
+    .pop {
+      animation: countPop 0.35s ease;
+    }
 
     /* ── RESPONSIVE ── */
     @media (max-width: 400px) {
@@ -829,30 +1006,61 @@
         height: 82px;
         margin-bottom: 14px;
       }
+
       .details-top {
         grid-template-columns: 1fr;
       }
+
       .top-photo-wrap {
         order: -1;
         align-self: center;
       }
+
       .top-photo {
         width: 120px;
         margin: 0 auto;
       }
-      .ayah-arabic { font-size: 20px; }
-      .date-day { font-size: 76px; }
-      .date-left, .date-time { font-size: 18px; }
-      .couple-names .name-script { font-size: 58px; }
-      .countdown { grid-template-columns: repeat(2,1fr); }
+
+      .ayah-arabic {
+        font-size: 20px;
+      }
+
+      .date-day {
+        font-size: 76px;
+      }
+
+      .date-left,
+      .date-time {
+        font-size: 18px;
+      }
+
+      .couple-names .name-script {
+        font-size: 58px;
+      }
+
+      .countdown {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
   </style>
 </head>
-<body>
+
+<body class="preloader-active">
+  <div id="intro-screen" aria-live="polite">
+    <video id="intro-video" playsinline preload="auto" muted>
+      <source src="./852.mp4" type="video/mp4" />
+    </video>
+    <div id="intro-progress">
+      <div id="intro-progress-bar"></div>
+    </div>
+  </div>
+
+  <div id="transition-overlay"></div>
+
   <div class="bg-animation" aria-hidden="true">
     <canvas class="bg-particles-canvas" id="bgParticlesCanvas"></canvas>
   </div>
-  <main class="invitation">
+  <main class="invitation" id="main-invitation">
 
     <!-- ══════════════════════════════
          PANEL 1 · COVER
@@ -865,30 +1073,28 @@
       <svg class="floral-corners" viewBox="0 0 430 780" xmlns="http://www.w3.org/2000/svg">
         <g fill="none" stroke="#fff" stroke-width="0.8">
           <!-- top-left spray -->
-          <path d="M30,40 Q60,20 50,60" /><path d="M30,40 Q10,70 50,65" />
-          <circle cx="50" cy="60" r="3" fill="#fff"/>
-          <circle cx="50" cy="65" r="2" fill="#fff"/>
-          <path d="M30,40 Q55,10 70,30" /><circle cx="70" cy="30" r="2.5" fill="#fff"/>
+          <path d="M30,40 Q60,20 50,60" />
+          <path d="M30,40 Q10,70 50,65" />
+          <circle cx="50" cy="60" r="3" fill="#fff" />
+          <circle cx="50" cy="65" r="2" fill="#fff" />
+          <path d="M30,40 Q55,10 70,30" />
+          <circle cx="70" cy="30" r="2.5" fill="#fff" />
           <!-- top-right spray -->
-          <path d="M400,40 Q370,20 380,60" /><path d="M400,40 Q420,70 380,65" />
-          <circle cx="380" cy="60" r="3" fill="#fff"/>
-          <circle cx="380" cy="65" r="2" fill="#fff"/>
-          <path d="M400,40 Q375,10 360,30" /><circle cx="360" cy="30" r="2.5" fill="#fff"/>
+          <path d="M400,40 Q370,20 380,60" />
+          <path d="M400,40 Q420,70 380,65" />
+          <circle cx="380" cy="60" r="3" fill="#fff" />
+          <circle cx="380" cy="65" r="2" fill="#fff" />
+          <path d="M400,40 Q375,10 360,30" />
+          <circle cx="360" cy="30" r="2.5" fill="#fff" />
           <!-- bottom ornament strip -->
-          <path d="M155,720 Q215,705 275,720" stroke-width="0.7"/>
-          <circle cx="215" cy="708" r="3" fill="#fff"/>
-          <path d="M180,716 Q215,700 250,716" stroke-width="0.6"/>
+          <path d="M155,720 Q215,705 275,720" stroke-width="0.7" />
+          <circle cx="215" cy="708" r="3" fill="#fff" />
+          <path d="M180,716 Q215,700 250,716" stroke-width="0.6" />
         </g>
       </svg>
 
       <div class="cover-content">
-        <img
-          src="img/n&n logo.png"
-          alt="N &amp; N"
-          class="cover-nn-logo"
-          width="96"
-          height="96"
-        />
+        <img src="img/n&n logo.png" alt="N &amp; N" class="cover-nn-logo" width="96" height="96" />
         <p class="bismillah">In the Name of Allah,<br>the Most Gracious, the Most Merciful</p>
 
         <div class="together-block">
@@ -902,12 +1108,7 @@
           <span class="name-ampersand">&amp;</span>
           <span class="name-script">Nafiha Wafiyya</span>
         </div>
-        <img
-          src="img/flower-line-divider.png"
-          alt=""
-          class="couple-names-divider"
-          aria-hidden="true"
-        />
+        <img src="img/flower-line-divider.png" alt="" class="couple-names-divider" aria-hidden="true" />
       </div>
 
       <div class="cover-bottom-ornament">✦&nbsp;&nbsp;&nbsp;✦&nbsp;&nbsp;&nbsp;✦</div>
@@ -922,8 +1123,11 @@
       <!-- Ayah (LEFT) + Photo (RIGHT) -->
       <div class="details-top">
         <div class="ayah reveal-left">
-          <p class="ayah-arabic">وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُمْ مِنْ أَنْفُسِكُمْ أَزْوَاجًا<br>لِتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُمْ مَوَدَّةً وَرَحْمَةً<br>إِنَّ فِي ذَٰلِكَ لَآيَاتٍ لِقَوْمٍ يَتَفَكَّرُونَ</p>
-          <p class="ayah-translation">"And among His signs is that He created for you mates from among yourselves, that you may find tranquility in them; and He has placed between you affection and mercy. Indeed in that are signs for people who reflect."</p>
+          <p class="ayah-arabic">وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُمْ مِنْ أَنْفُسِكُمْ أَزْوَاجًا<br>لِتَسْكُنُوا
+            إِلَيْهَا وَجَعَلَ بَيْنَكُمْ مَوَدَّةً وَرَحْمَةً<br>إِنَّ فِي ذَٰلِكَ لَآيَاتٍ لِقَوْمٍ يَتَفَكَّرُونَ</p>
+          <p class="ayah-translation">"And among His signs is that He created for you mates from among yourselves, that
+            you may find tranquility in them; and He has placed between you affection and mercy. Indeed in that are
+            signs for people who reflect."</p>
         </div>
         <div class="top-photo-wrap reveal-right d2">
           <div class="top-photo">
@@ -990,23 +1194,18 @@
       <div class="map-preview reveal d4">
         <iframe
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3913.5!2d75.97!3d10.96!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTDCsDU3JzQyLjAiTiA3NcKwNTgnMTIuMCJF!5e0!3m2!1sen!2sin!4v1"
-          allowfullscreen=""
-          loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"
-          title="Venue map">
+          allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Venue map">
         </iframe>
       </div>
 
       <div class="map-btn-wrap reveal d5">
-        <a class="map-btn" href="https://maps.app.goo.gl/28tgdTrqiuN8jgtY9?g_st=aw" target="_blank" rel="noopener noreferrer">
+        <a class="map-btn" href="https://maps.app.goo.gl/28tgdTrqiuN8jgtY9?g_st=aw" target="_blank"
+          rel="noopener noreferrer">
           <span class="map-btn-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" 
-                 xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 22s7-5.686 7-12A7 7 0 1 0 5 10c0 6.314 7 12 7 12Z" 
-                    stroke="currentColor" stroke-width="2" 
-                    stroke-linecap="round" stroke-linejoin="round"/>
-              <circle cx="12" cy="10" r="3" 
-                      stroke="currentColor" stroke-width="2"/>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 22s7-5.686 7-12A7 7 0 1 0 5 10c0 6.314 7 12 7 12Z" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" />
+              <circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="2" />
             </svg>
           </span>
           <span>Get Directions</span>
@@ -1027,6 +1226,67 @@
   </main>
 
   <script>
+    (function () {
+      var introScreen = document.getElementById("intro-screen");
+      var introVideo = document.getElementById("intro-video");
+      var progressBar = document.getElementById("intro-progress-bar");
+      var transitionOverlay = document.getElementById("transition-overlay");
+      var introDone = false;
+      var introStarted = false;
+
+      if (!introScreen || !introVideo || !progressBar || !transitionOverlay) {
+        document.body.classList.remove("preloader-active");
+        return;
+      }
+
+      function revealMain() {
+        introScreen.classList.add("hidden");
+        document.body.classList.remove("preloader-active");
+        window.scrollTo(0, 0);
+        transitionOverlay.classList.remove("active");
+      }
+
+      function finishIntro() {
+        if (introDone) return;
+        introDone = true;
+        introVideo.pause();
+        revealMain();
+      }
+
+      function updateProgress() {
+        var d = introVideo.duration || 0;
+        var ratio = d > 0 ? Math.min(1, Math.max(0, introVideo.currentTime / d)) : 0;
+        progressBar.style.transform = "scaleX(" + ratio + ")";
+      }
+
+      function startIntroPlayback() {
+        if (introStarted) return;
+        introStarted = true;
+        introScreen.classList.add("playing");
+        transitionOverlay.classList.remove("active");
+        introVideo.muted = true;
+        introVideo.currentTime = 0;
+        var p = introVideo.play();
+        if (p && typeof p.catch === "function") {
+          p.catch(function () {
+            introVideo.play().catch(function () {
+              finishIntro();
+            });
+          });
+        }
+      }
+
+      introScreen.addEventListener("click", function (event) {
+        startIntroPlayback();
+      });
+
+      introVideo.addEventListener("click", startIntroPlayback);
+      introVideo.addEventListener("ended", finishIntro);
+      introVideo.addEventListener("timeupdate", updateProgress);
+      introVideo.addEventListener("loadedmetadata", updateProgress);
+      introVideo.addEventListener("error", finishIntro);
+    })();
+
     // ── Background: particles.js–style linked dots, pseudo-3D (z → scale/speed), fall top → bottom
     (function () {
       var canvas = document.getElementById("bgParticlesCanvas");
@@ -1210,7 +1470,7 @@
       function tick() {
         var diff = wedding - Date.now();
         if (diff <= 0) {
-          ["d","h","m","s"].forEach(k => els[k].textContent = "00");
+          ["d", "h", "m", "s"].forEach(k => els[k].textContent = "00");
           return;
         }
         var d = Math.floor(diff / 864e5);
