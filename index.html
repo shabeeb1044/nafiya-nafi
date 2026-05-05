@@ -5,7 +5,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Wedding Invitation – Nafih & Nafiha</title>
-  <link rel="preload" href="./852.mp4" as="video" type="video/mp4">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -24,30 +23,6 @@
       --gold-light: #d4b896;
       --cream: #faf8f5;
     }
-
-
-    video {
-  -webkit-tap-highlight-color: transparent;
-  user-select: none !important;
-  outline: none;
-  cursor: pointer;
-
-}
-
-.video-container{
-  -webkit-tap-highlight-color: transparent;
-
-}
-
-.video-container video {
-  user-select: none;
-}
-
-
-
-video:focus {
-  outline: none;
-}
 
     *,
     *::before,
@@ -88,7 +63,7 @@ video:focus {
     }
 
     #main-invitation {
-      transition: opacity 0.6s ease, transform 0.6s ease;
+      transition: opacity 0.22s ease, transform 0.22s ease;
     }
 
     body.preloader-active #main-invitation {
@@ -101,9 +76,21 @@ video:focus {
       position: fixed;
       inset: 0;
       z-index: 9999;
-      background: #080808;
+      background: #e8e4dc;
       overflow: hidden;
-      transition: opacity 0.7s ease, visibility 0.7s ease;
+      transition: opacity 0.08s ease, visibility 0.08s ease;
+      --intro-w: 1200px;
+      --intro-h: 850px;
+      --intro-h-sm: 763px;
+      --intro-text: #2d292a;
+      --intro-ease-out: cubic-bezier(0.33, 1, 0.68, 1);
+      --intro-ease-inout: cubic-bezier(0.45, 0, 0.55, 1);
+    }
+
+    @media (max-width: 479px) {
+      #intro-screen {
+        --intro-h: var(--intro-h-sm);
+      }
     }
 
     #intro-screen.hidden {
@@ -112,18 +99,181 @@ video:focus {
       pointer-events: none;
     }
 
-    #intro-video {
+    #intro-screen .intro-viewport {
       position: absolute;
       inset: 0;
       width: 100%;
       height: 100%;
-      object-fit: cover;
-      opacity: 1;
-      transition: opacity 0.45s ease;
+      min-height: 100%;
+      min-height: 100dvh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: #e8e4dc;
     }
 
-    #intro-screen:not(.playing) {
+    #intro-screen .intro-scaler {
+      width: var(--intro-w);
+      height: var(--intro-h);
+      flex-shrink: 0;
+      transform-origin: center center;
+      transform: scale(max(calc(100vw / var(--intro-w)), calc(100vh / var(--intro-h))));
+    }
+
+    @supports (height: 100dvh) {
+      #intro-screen .intro-scaler {
+        transform: scale(max(calc(100vw / var(--intro-w)), calc(100dvh / var(--intro-h))));
+      }
+    }
+
+    #intro-screen .intro-artboard {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      z-index: 990;
+    }
+
+    #intro-screen .intro-layer {
+      position: absolute;
+      z-index: 3;
+    }
+
+    #intro-screen .intro-layer img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    #intro-screen .intro-panel--left {
+      top: -13px;
+      left: calc(50% - 600px + 98px);
+      width: 467px;
+      transform: translateX(0);
+      opacity: 1;
+      transition:
+        transform 2s var(--intro-ease-inout) 2.5s,
+        opacity 0.5s ease-out 4.5s;
+    }
+
+    #intro-screen .intro-panel--right {
+      top: -13px;
+      left: calc(50% - 600px + 635px);
+      width: 467px;
+      transform: translateX(0);
+      opacity: 1;
+      transition:
+        transform 2s var(--intro-ease-inout) 2.5s,
+        opacity 0.5s ease-out 4.5s;
+    }
+
+    #intro-screen .intro-envelope--lower {
+      top: 271px;
+      left: calc(50% - 600px + 95px);
+      width: 1011px;
+      transform: translateY(0);
+      transition: transform 1.5s var(--intro-ease-inout) 2.5s;
+    }
+
+    #intro-screen .intro-envelope--upper {
+      top: -6px;
+      left: calc(50% - 600px + 94px);
+      width: 1012px;
+      transform: translateY(0);
+      transition: transform 1.5s var(--intro-ease-inout) 2.5s;
+    }
+
+    #intro-screen .intro-seal {
+      top: 288px;
+      left: calc(50% - 600px + 515px);
+      width: 170px;
       cursor: pointer;
+      transform: scale(1);
+      opacity: 1;
+      transition:
+        transform 0.3s var(--intro-ease-out),
+        opacity 0.28s ease-out;
+      border: 0;
+      padding: 0;
+      background: transparent;
+      line-height: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    #intro-screen.intro-is-opening .intro-seal {
+      transform: scale(1.12);
+      opacity: 0;
+    }
+
+    #intro-screen.intro-is-opening .intro-hint {
+      opacity: 0;
+      transition: opacity 0.22s ease-out;
+    }
+
+    #intro-screen .intro-seal:focus-visible {
+      outline: 3px solid #c9a962;
+      outline-offset: 4px;
+    }
+
+    #intro-screen .intro-seal:disabled {
+      cursor: default;
+    }
+
+    #intro-screen .intro-hint {
+      top: 468px;
+      left: calc(50% - 600px + 535px);
+      width: 130px;
+      color: var(--intro-text);
+      text-align: center;
+      font-size: 20px;
+      line-height: 1.55;
+      font-weight: 400;
+      font-family: Arial, Helvetica, sans-serif;
+      transform: none;
+      opacity: 1;
+      transition: opacity 0.24s ease-out;
+      pointer-events: none;
+    }
+
+    #intro-screen .intro--opened .intro-panel--left {
+      transform: translateX(-560px);
+      opacity: 0;
+    }
+
+    #intro-screen .intro--opened .intro-panel--right {
+      transform: translateX(559px);
+      opacity: 0;
+    }
+
+    #intro-screen .intro--opened .intro-envelope--lower {
+      transform: translateY(566px);
+    }
+
+    #intro-screen .intro--opened .intro-envelope--upper {
+      transform: translateY(-430px);
+    }
+
+    #intro-screen .intro--opened .intro-seal {
+      transform: scale(1.22);
+      opacity: 0;
+    }
+
+    #intro-screen .intro--opened .intro-hint {
+      opacity: 0;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+      #intro-screen .intro-panel--left,
+      #intro-screen .intro-panel--right,
+      #intro-screen .intro-envelope--lower,
+      #intro-screen .intro-envelope--upper,
+      #intro-screen .intro-seal,
+      #intro-screen .intro-hint,
+      #intro-screen.intro-is-opening .intro-hint {
+        transition-duration: 0.01ms !important;
+        transition-delay: 0s !important;
+      }
     }
 
     #transition-overlay {
@@ -140,25 +290,6 @@ video:focus {
     #transition-overlay.active {
       opacity: 1;
       visibility: visible;
-    }
-
-    #intro-progress {
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 3;
-      height: 3px;
-      background: rgba(255, 255, 255, 0.2);
-    }
-
-    #intro-progress-bar {
-      width: 100%;
-      height: 100%;
-      transform-origin: left center;
-      transform: scaleX(0);
-      transition: transform 0.1s linear;
-      background: linear-gradient(90deg, #f2d3ae 0%, #c28e5b 100%);
     }
 
     /* ── Page background: canvas particles (particles.js–style, 3D depth, top → bottom) ── */
@@ -1071,11 +1202,28 @@ video:focus {
 
 <body class="preloader-active">
   <div id="intro-screen" aria-live="polite">
-    <video id="intro-video" playsinline preload="auto" muted>
-      <source src="./852.mp4" type="video/mp4" />
-    </video>
-    <div id="intro-progress">
-      <div id="intro-progress-bar"></div>
+    <div class="intro-viewport">
+      <div class="intro-scaler">
+        <div class="intro-artboard" id="intro-root">
+          <div class="intro-layer intro-panel--left" aria-hidden="true">
+            <img src="./intro/images/Polygon_4.png.webp" width="467" height="874" alt="">
+          </div>
+          <div class="intro-layer intro-panel--right" aria-hidden="true">
+            <img src="./intro/images/Polygon_3.png.webp" width="467" height="874" alt="">
+          </div>
+          <div class="intro-layer intro-envelope--lower" aria-hidden="true">
+            <img src="./intro/images/Polygon_2_1.png" width="1011" height="581" alt="">
+          </div>
+          <div class="intro-layer intro-envelope--upper" aria-hidden="true">
+            <img src="./intro/images/Polygon_1_3.png.webp" width="1012" height="439" alt="">
+          </div>
+          <button type="button" class="intro-layer intro-seal popup-enter"
+            aria-label="Open invitation">
+            <img src="./intro/images/nn.png" width="170" height="170" alt="">
+          </button>
+          <p class="intro-layer intro-hint">Click to open</p>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -1252,225 +1400,59 @@ video:focus {
   <script>
     (function () {
       var introScreen = document.getElementById("intro-screen");
-      var introVideo = document.getElementById("intro-video");
-      var progressBar = document.getElementById("intro-progress-bar");
+      var introRoot   = document.getElementById("intro-root");
+      var enterButton = document.querySelector("#intro-screen .popup-enter");
       var transitionOverlay = document.getElementById("transition-overlay");
-      var introDone = false;
-      var introStarted = false;
-
-      if (!introScreen || !introVideo || !progressBar || !transitionOverlay) {
+      var introDone   = false;
+    
+      if (!introScreen || !introRoot || !transitionOverlay) {
         document.body.classList.remove("preloader-active");
         return;
       }
-
+    
+      /* Step 3 — hide intro, show main content */
       function revealMain() {
         introScreen.classList.add("hidden");
         document.body.classList.remove("preloader-active");
-        window.scrollTo(0, 0);
         transitionOverlay.classList.remove("active");
+        window.scrollTo(0, 0);
       }
-
-      function finishIntro() {
+    
+      /* Step 2 — after envelope animation ends, fade overlay then reveal */
+      function afterEnvelopeOpen() {
         if (introDone) return;
         introDone = true;
-        introVideo.pause();
-        revealMain();
+    
+        transitionOverlay.classList.add("active");          // gentle flash
+        setTimeout(revealMain, 480);                        // let fade finish
       }
-
-      function updateProgress() {
-        var d = introVideo.duration || 0;
-        var ratio = d > 0 ? Math.min(1, Math.max(0, introVideo.currentTime / d)) : 0;
-        progressBar.style.transform = "scaleX(" + ratio + ")";
+    
+      /* Step 1 — seal click: trigger envelope open class, then wait for CSS transitions */
+      function openIntro() {
+        if (introDone) return;
+        if (enterButton) enterButton.disabled = true;
+    
+        var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (reduced) { afterEnvelopeOpen(); return; }
+    
+        /* Add the class that drives all CSS transition animations */
+        introRoot.classList.add("intro--opened");
+    
+        /* 
+          The longest CSS transition on .intro--opened children is 2s (panels + envelope).
+          Wait 2000ms for those to finish, then run afterEnvelopeOpen.
+        */
+        setTimeout(afterEnvelopeOpen, 2000);
       }
-
-      function startIntroPlayback() {
-        if (introStarted) return;
-        introStarted = true;
-        introScreen.classList.add("playing");
-        transitionOverlay.classList.remove("active");
-        introVideo.muted = true;
-        introVideo.currentTime = 0;
-        var p = introVideo.play();
-        if (p && typeof p.catch === "function") {
-          p.catch(function () {
-            introVideo.play().catch(function () {
-              finishIntro();
-            });
-          });
-        }
+    
+      if (enterButton) {
+        enterButton.addEventListener("click", openIntro);
+        enterButton.addEventListener("keydown", function (e) {
+          if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openIntro(); }
+        });
       }
-
-      introScreen.addEventListener("click", function (event) {
-        startIntroPlayback();
-      });
-
-      introVideo.addEventListener("click", startIntroPlayback);
-      introVideo.addEventListener("ended", finishIntro);
-      introVideo.addEventListener("timeupdate", updateProgress);
-      introVideo.addEventListener("loadedmetadata", updateProgress);
-      introVideo.addEventListener("error", finishIntro);
     })();
-
-    // ── Background: particles.js–style linked dots, pseudo-3D (z → scale/speed), fall top → bottom
-    (function () {
-      var canvas = document.getElementById("bgParticlesCanvas");
-      if (!canvas || !canvas.getContext) return;
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-      var ctx = canvas.getContext("2d", { alpha: true });
-      var W = 0;
-      var H = 0;
-      var dpr = 1;
-      var particles = [];
-      var focal = 520;
-      var linkDist = 118;
-      var linkDistSq = linkDist * linkDist;
-      var lastT = 0;
-      var rafId = 0;
-
-      function rand(a, b) {
-        return a + Math.random() * (b - a);
-      }
-
-      function focalScale(z) {
-        return focal / (focal - z);
-      }
-
-      function resetParticle(p, fromTop) {
-        p.x = rand(0, W);
-        p.y = fromTop ? rand(-H * 0.45, -8) : rand(-H * 0.2, H + 40);
-        p.z = rand(-320, 320);
-        p.vy = rand(0.35, 1.05);
-        p.vx = rand(-0.45, 0.45);
-        p.vz = rand(-0.12, 0.12);
-        p.rBase = rand(0.9, 2.4);
-        p.phase = rand(0, Math.PI * 2);
-      }
-
-      function resize() {
-        dpr = Math.min(window.devicePixelRatio || 1, 2);
-        W = window.innerWidth;
-        H = window.innerHeight;
-        canvas.style.width = W + "px";
-        canvas.style.height = H + "px";
-        canvas.width = Math.floor(W * dpr);
-        canvas.height = Math.floor(H * dpr);
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        linkDist = Math.min(132, Math.max(88, W * 0.13));
-        linkDistSq = linkDist * linkDist;
-
-        var area = W * H;
-        var target = Math.floor(area / 8500);
-        var count = Math.min(110, Math.max(42, target));
-
-        if (particles.length === 0) {
-          for (var i = 0; i < count; i++) {
-            var p = {};
-            resetParticle(p, false);
-            particles.push(p);
-          }
-        } else if (particles.length < count) {
-          while (particles.length < count) {
-            var q = {};
-            resetParticle(q, true);
-            particles.push(q);
-          }
-        } else if (particles.length > count) {
-          particles.length = count;
-        }
-      }
-
-      function step(dt) {
-        var t = performance.now() * 0.001;
-        for (var i = 0; i < particles.length; i++) {
-          var p = particles[i];
-          var sc = focalScale(p.z);
-          var sway = Math.sin(t * 0.55 + p.phase) * 0.22;
-          p.y += p.vy * dt * 0.55 * sc;
-          p.x += (p.vx + sway) * dt * 0.55 * sc;
-          p.z += p.vz * dt;
-          if (p.z > 300) p.vz = -Math.abs(p.vz);
-          if (p.z < -300) p.vz = Math.abs(p.vz);
-          if (p.y > H + 60) resetParticle(p, true);
-        }
-      }
-
-      function draw() {
-        ctx.clearRect(0, 0, W, H);
-        var i;
-        var j;
-        var a;
-        var b;
-        var dx;
-        var dy;
-        var d2;
-        var t;
-        var midZ;
-        var lineA;
-        var sc;
-        var cx;
-        var cy;
-        var pr;
-        var fillA;
-        var g;
-
-        for (i = 0; i < particles.length; i++) {
-          a = particles[i];
-          for (j = i + 1; j < particles.length; j++) {
-            b = particles[j];
-            dx = a.x - b.x;
-            dy = a.y - b.y;
-            d2 = dx * dx + dy * dy;
-            if (d2 > linkDistSq) continue;
-            if (Math.abs(a.z - b.z) > 220) continue;
-            midZ = (a.z + b.z) * 0.5;
-            t = 1 - d2 / linkDistSq;
-            lineA = t * t * (0.08 + focalScale(midZ) * 0.05);
-            if (lineA < 0.018) continue;
-            ctx.strokeStyle = "rgba(184, 149, 106, " + Math.min(lineA, 0.26) + ")";
-            ctx.lineWidth = 0.55;
-            ctx.beginPath();
-            ctx.moveTo(a.x, a.y);
-            ctx.lineTo(b.x, b.y);
-            ctx.stroke();
-          }
-        }
-
-        for (i = 0; i < particles.length; i++) {
-          a = particles[i];
-          sc = focalScale(a.z);
-          cx = a.x;
-          cy = a.y;
-          pr = a.rBase * sc * 0.52;
-          fillA = Math.min(0.5, 0.12 + sc * 0.1);
-          g = ctx.createRadialGradient(cx - pr * 0.35, cy - pr * 0.35, 0, cx, cy, pr * 2.4);
-          g.addColorStop(0, "rgba(255,255,255," + (fillA + 0.18) + ")");
-          g.addColorStop(0.45, "rgba(255,250,245," + (fillA * 0.75) + ")");
-          g.addColorStop(1, "rgba(255,255,255,0)");
-          ctx.fillStyle = g;
-          ctx.beginPath();
-          ctx.arc(cx, cy, pr * 2, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.fillStyle = "rgba(255,255,255," + (fillA + 0.06) + ")";
-          ctx.beginPath();
-          ctx.arc(cx, cy, pr, 0, Math.PI * 2);
-          ctx.fill();
-        }
-      }
-
-      function frame(now) {
-        var dt = lastT ? Math.min((now - lastT) / 16.67, 3) : 1;
-        lastT = now;
-        step(dt);
-        draw();
-        rafId = requestAnimationFrame(frame);
-      }
-
-      resize();
-      window.addEventListener("resize", resize);
-      rafId = requestAnimationFrame(frame);
-    })();
-  </script>
+    </script>
   <script>
     // ── Countdown ──────────────────────────────────
     (function () {
